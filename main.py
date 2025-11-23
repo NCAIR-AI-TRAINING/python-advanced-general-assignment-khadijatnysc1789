@@ -42,9 +42,11 @@ def add_visitor(visitor_name):
     if last_visitor_info:
         last_name, last_timestamp = last_visitor_info
         
+        # Check for duplicate consecutive visitors
         if last_name == visitor_name:
             raise DuplicateVisitorError(f"Visitor '{visitor_name}' is already the last visitor!")
         
+        # Enforce 5-minute wait time between different visitors
         time_elapsed = datetime.now() - last_timestamp
         if time_elapsed.total_seconds() < 300:
             raise EarlyEntryError(f"Must wait 5 minutes between different visitors. Only {time_elapsed.total_seconds():.0f} seconds have passed.")
